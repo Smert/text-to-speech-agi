@@ -13,7 +13,7 @@ program
   .parse(process.argv);
 
 const options = program.opts();
-new AGIServer(
+AGIServer.create(
   options.port,
   options.records || DEFAULT_RECORDS_DIR,
   options.key
