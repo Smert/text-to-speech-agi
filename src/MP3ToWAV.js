@@ -8,7 +8,7 @@ class MP3ToWAV {
   static create() {
     const convertCommand = (inputFilepath, outputFilepath) => {
       return CLIDataProvider
-        .create(`ffmpeg -i "${inputFilepath}" -ar 8000 -ac 1 -ab 64 "${outputFilepath}"`)
+        .create(`ffmpeg -i "${inputFilepath}" -ar 8000 -ac 1 -ab 64 -n "${outputFilepath}"`)
         .run();
     };
     return new MP3ToWAV(convertCommand);
