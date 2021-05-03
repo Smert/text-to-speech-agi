@@ -13,7 +13,7 @@ class CLIDataProvider {
     );
   }
 
-  get() {
+  run() {
     return new Promise((resolve, reject) => {
       this._exec(this._command, (error, stdout) => {
         if (error) {
