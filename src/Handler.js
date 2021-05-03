@@ -59,8 +59,9 @@ class Handler {
     console.log('text = ', text);
 
     const filename = text.replace(/[\/\\"']/g, '--');
+    const filepath = path.join(this._recordsDir, filename);
     console.log('Create MP3 using Google Text-To-Speech API', filename);
-    const mp3Filepath = path.join(this._recordsDir, filename + '.mp3');
+    const mp3Filepath = filepath + '.mp3';
     try {
       await this._advancedTextToMP3.convert(text, mp3Filepath);
     } catch (error) {
@@ -69,12 +70,12 @@ class Handler {
       await this._reserveTextToMP3.convert(text, mp3Filepath);
     }
 
-    const wavFilepath = path.join(this._recordsDir, filename + '.wav');
+    const wavFilepath = filepath + '.wav';
     console.log('Convert MP3 to WAV', wavFilepath);
     await this._mp3ToWAV.convert(mp3Filepath, wavFilepath);
 
     console.log('Stream file');
-    await this._context.streamFile(wavFilepath, '#');
+    await this._context.streamFile(filepath, '#');
 
     console.log('Finish');
     await this._context.end();
