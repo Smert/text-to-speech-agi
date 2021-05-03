@@ -1,5 +1,5 @@
 const GoogleTTS = require('node-google-tts-api');
-const fs = require('fs').promise;
+const fs = require('fs').promises;
 
 const tts = new GoogleTTS();
 
