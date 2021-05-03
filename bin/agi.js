@@ -7,7 +7,6 @@ const DEFAULT_RECORDS_DIR = '/tmp/text-to-speech';
 
 program
   .requiredOption('-p, --port [port]', 'port for fast-agi server')
-  .requiredOption('-k, --key [key]', 'recognition service auth key')
   .option('-r, --records [records]', 'path to records dir. Default: ' + DEFAULT_RECORDS_DIR)
   .helpOption('-h, --help', 'read more information')
   .parse(process.argv);
@@ -15,6 +14,5 @@ program
 const options = program.opts();
 AGIServer.create(
   options.port,
-  options.records || DEFAULT_RECORDS_DIR,
-  options.key
+  options.records || DEFAULT_RECORDS_DIR
 ).start();
