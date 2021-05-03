@@ -65,6 +65,7 @@ class Handler {
       console.log('Create MP3 using Google Text-To-Speech API');
       filepath = await this._createMP3(text);
     } catch (error) {
+      console.error(error);
       console.log('Create WAV using Google Translate API');
       filepath = await this._createReserveMP3(text);
     }
