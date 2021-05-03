@@ -1,6 +1,6 @@
 {
   "name": "text-to-speech",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,6 @@
     "@google-cloud/text-to-speech": "^3.2.0",
     "commander": "^7.2.0",
     "ding-dong": "^0.1.7",
-    "google-translate-tts": "^0.4.0-dev",
-    "uuid": "^8.3.2"
+    "node-google-tts-api": "^1.1.1"
   }
 }

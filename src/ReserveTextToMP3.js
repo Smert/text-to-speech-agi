@@ -1,5 +1,7 @@
-const tts = require('google-translate-tts');
+const GoogleTTS = require('node-google-tts-api');
 const fs = require('fs').promise;
+
+const tts = new GoogleTTS();
 
 class ReserveTextToMP3 {
   constructor(_tts, _fs) {
@@ -15,11 +17,10 @@ class ReserveTextToMP3 {
   }
 
   async convert(text, outputFilepath) {
-    const buffer = await this._tts.synthesize({
+    const buffer = await this._tts.get({
       text,
-      voice: 'ru-RU'
+      lang: 'ru'
     });
-
     await this._fs.writeFile(outputFilepath, buffer);
   }
 }

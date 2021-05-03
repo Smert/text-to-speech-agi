@@ -5,6 +5,7 @@ const path = require('path');
 
 // TODO Retry policy
 // TODO Use cache
+// TODO Rate limit
 class Handler {
   constructor(context, advancedTextToMP3, reserveTextToMP3, mp3ToWAV, recordsDir) {
     this._context = context;
@@ -57,7 +58,7 @@ class Handler {
     const text = variables.agi_arg_1;
     console.log('text = ', text);
 
-    const filename = encodeURIComponent(text);
+    const filename = text.replace(/\/|\\/g, '--');
     console.log('Create MP3 using Google Text-To-Speech API', filename);
     const mp3Filepath = path.join(this._recordsDir, filename + '.mp3');
     try {
