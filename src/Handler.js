@@ -54,30 +54,32 @@ class Handler {
   }
 
   async _onStart(variables) {
-    const text = variables.agi_arg_1;
-    console.log('text = ', text);
+    const text = String(variables.agi_arg_1).trim();
+    console.log(`text="${text}"`);
 
-    console.log(`Set variable ${RESULT_VAR}=FAILED`);
-    await this._context.setVariable(RESULT_VAR, 'FAILED');
+    if (text) {
+      console.log(`Set variable ${RESULT_VAR}=FAILED`);
+      await this._context.setVariable(RESULT_VAR, 'FAILED');
 
-    console.log('Create MP3 using Google Text-To-Speech API');
-    const filepath = path.join(this._recordsDir, text.replace(/[\/\\"']/g, '--'));
-    if (!await isFileExists(filepath + '.wav')) {
-      await retry(async () => {
-        return await this._textToMP3.convert(text, filepath + '.mp3');
-      }, TEXT_TO_SPEECH_RETRY);
+      console.log('Create MP3 using Google Text-To-Speech API');
+      const filepath = path.join(this._recordsDir, text.replace(/[\/\\"']/g, '--'));
+      if (!await isFileExists(filepath + '.wav')) {
+        await retry(async () => {
+          return await this._textToMP3.convert(text, filepath + '.mp3');
+        }, TEXT_TO_SPEECH_RETRY);
 
-      console.log('Convert MP3 to WAV', filepath);
-      await this._mp3ToWAV.convert(filepath + '.mp3', filepath + '.wav');
-    } else {
-      console.log(`File ${filepath}.wav exists`);
+        console.log('Convert MP3 to WAV', filepath);
+        await this._mp3ToWAV.convert(filepath + '.mp3', filepath + '.wav');
+      } else {
+        console.log(`File ${filepath}.wav exists`);
+      }
+
+      console.log('Stream file');
+      await this._context.streamFile(filepath, '#');
+
+      console.log(`Set variable ${RESULT_VAR}=SUCCESS`);
+      await this._context.setVariable(RESULT_VAR, 'SUCCESS');
     }
-
-    console.log('Stream file');
-    await this._context.streamFile(filepath, '#');
-
-    console.log(`Set variable ${RESULT_VAR}=SUCCESS`);
-    await this._context.setVariable(RESULT_VAR, 'SUCCESS');
 
     console.log('Finish');
     await this._context.end();
