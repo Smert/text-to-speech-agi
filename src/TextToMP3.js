@@ -1,7 +1,7 @@
 const {TextToSpeechClient} = require('@google-cloud/text-to-speech');
 const {promises: fs} = require('fs');
 
-class AdvancedTextToMP3 {
+class TextToMP3 {
   constructor(textToSpeechClient, _fs) {
     this._textToSpeechClient = textToSpeechClient;
     this._fs = _fs;
@@ -11,7 +11,7 @@ class AdvancedTextToMP3 {
     const textToSpeechClient = new TextToSpeechClient({
       keyFilename: 'key.json'
     });
-    return new AdvancedTextToMP3(
+    return new TextToMP3(
       textToSpeechClient,
       fs
     );
@@ -33,4 +33,4 @@ class AdvancedTextToMP3 {
   }
 }
 
-module.exports = AdvancedTextToMP3;
+module.exports = TextToMP3;
