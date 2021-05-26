@@ -3,6 +3,7 @@ const MP3ToWAV = require('./MP3ToWAV');
 const path = require('path');
 const retry = require('./utils/retry');
 const isFileExists = require('./utils/isFileExists');
+const crypto = require('crypto');
 
 const RESULT_VAR = 'TEXT_TO_SPEECH_RESULT';
 const TEXT_TO_SPEECH_RETRY = 3;
@@ -62,7 +63,8 @@ class Handler {
       await this._context.setVariable(RESULT_VAR, 'FAILED');
 
       console.log('Create MP3 using Google Text-To-Speech API');
-      const filepath = path.join(this._recordsDir, text.replace(/[\/\\"']/g, '--'));
+      const hash = crypto.createHash('md5').update(text).digest('hex');
+      const filepath = path.join(this._recordsDir, hash);
       if (!await isFileExists(filepath + '.wav')) {
         await retry(async () => {
           return await this._textToMP3.convert(text, filepath + '.mp3');
