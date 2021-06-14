@@ -7,9 +7,9 @@ class AGIServer {
     this._handler = handler;
   }
 
-  static create(agiPort, recordsDir) {
+  static create(agiPort, recordsDir, voiceName) {
     return new AGIServer(agiPort, (context) => {
-      Handler.create(context, recordsDir).handle();
+      Handler.create(context, recordsDir, voiceName).handle();
     });
   }
 

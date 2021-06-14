@@ -4,6 +4,7 @@ const program = require('commander');
 const AGIServer = require('../src/AGIServer');
 
 const DEFAULT_RECORDS_DIR = '/tmp/text-to-speech';
+const DEFAULT_VOICE = 'ru-RU-Wavenet-C';
 
 program
   .requiredOption('-p, --port [port]', 'port for fast-agi server')
@@ -14,5 +15,6 @@ program
 const options = program.opts();
 AGIServer.create(
   options.port,
-  options.records || DEFAULT_RECORDS_DIR
+  options.records || DEFAULT_RECORDS_DIR,
+  options.voice || DEFAULT_VOICE
 ).start();

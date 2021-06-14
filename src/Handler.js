@@ -16,10 +16,10 @@ class Handler {
     this._recordsDir = recordsDir;
   }
 
-  static create(context, recordsDir) {
+  static create(context, recordsDir, voiceName) {
     return new Handler(
       context,
-      TextToMP3.create(),
+      TextToMP3.create(voiceName),
       MP3ToWAV.create(),
       recordsDir
     );
