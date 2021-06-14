@@ -9,6 +9,7 @@ const DEFAULT_VOICE = 'ru-RU-Wavenet-C';
 program
   .requiredOption('-p, --port [port]', 'port for fast-agi server')
   .option('-r, --records [records]', 'path to records dir. Default: ' + DEFAULT_RECORDS_DIR)
+  .option('-v, --voice [voice]', 'voice name. Default: ' + DEFAULT_VOICE)
   .helpOption('-h, --help', 'read more information')
   .parse(process.argv);
 
