@@ -21,6 +21,7 @@ class TextToMP3 {
     const [response] = await this._textToSpeechClient.synthesizeSpeech({
       input: {text},
       voice: {
+        languageCode: 'ru-RU',
         name: voiceName
       },
       audioConfig: {
