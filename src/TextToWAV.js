@@ -58,4 +58,4 @@ class TextToWAV {
   }
 }
 
-export default TextToWAV;
+module.exports = TextToWAV;
