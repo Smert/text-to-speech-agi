@@ -2,29 +2,26 @@ const {TextToSpeechClient} = require('@google-cloud/text-to-speech');
 const {promises: fs} = require('fs');
 
 class TextToMP3 {
-  constructor(textToSpeechClient, _fs, voiceName) {
+  constructor(textToSpeechClient, _fs) {
     this._textToSpeechClient = textToSpeechClient;
     this._fs = _fs;
-    this._voiceName = voiceName;
   }
 
-  static create(voiceName) {
+  static create() {
     const textToSpeechClient = new TextToSpeechClient({
       keyFilename: 'key.json'
     });
     return new TextToMP3(
       textToSpeechClient,
-      fs,
-      voiceName
+      fs
     );
   }
 
-  async convert(text, outputFilepath) {
+  async convert(text, outputFilepath, voiceName) {
     const [response] = await this._textToSpeechClient.synthesizeSpeech({
       input: {text},
       voice: {
-        languageCode: 'ru-RU',
-        name: this._voiceName
+        name: voiceName
       },
       audioConfig: {
         audioEncoding: 'MP3',

@@ -16,17 +16,17 @@ class TextToWAV {
     this._debug = debug;
   }
 
-  static create(recordsDir, voiceName, debug) {
+  static create(recordsDir, debug) {
     return new TextToWAV(
       recordsDir,
       isFileExists,
-      TextToMP3.create(voiceName),
+      TextToMP3.create(),
       MP3ToWAV.create(),
       debug
     );
   }
 
-  async convert(text) {
+  async convert(text, voiceName) {
     const hash = crypto.createHash('md5').update(text).digest('hex');
     const filepath = path.join(this._recordsDir, hash);
     const wavExists = await this._isFileExists(filepath + '.wav');
@@ -34,7 +34,7 @@ class TextToWAV {
     if (!wavExists && !await this._isFileExists(filepath + '.mp3')) {
       this._log('Create MP3 using Google Text-To-Speech API');
       await retry(async () => {
-        return await this._textToMP3.convert(text, filepath + '.mp3');
+        return await this._textToMP3.convert(text, filepath + '.mp3', voiceName);
       }, TEXT_TO_SPEECH_RETRY);
     }
 

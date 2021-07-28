@@ -3,15 +3,17 @@ const TextToWAV = require('./TextToWAV');
 const RESULT_VAR = 'TEXT_TO_SPEECH_RESULT';
 
 class Handler {
-  constructor(context, textToWAV) {
+  constructor(context, textToWAV, voiceName) {
     this._context = context;
     this._textToWAV = textToWAV;
+    this._voiceName = voiceName;
   }
 
   static create(context, recordsDir, voiceName) {
     return new Handler(
       context,
-      TextToWAV.create(recordsDir, voiceName, true)
+      TextToWAV.create(recordsDir, true),
+      voiceName
     );
   }
 
@@ -52,7 +54,7 @@ class Handler {
       console.log(`Set variable ${RESULT_VAR}=FAILED`);
       await this._context.setVariable(RESULT_VAR, 'FAILED');
 
-      const {filepath} = await this._textToWAV.convert(text);
+      const {filepath} = await this._textToWAV.convert(text, this._voiceName);
 
       console.log('Stream file');
       await this._context.streamFile(filepath, '#');
