@@ -26,7 +26,7 @@ class TextToMP3 {
       },
       audioConfig: {
         audioEncoding: 'MP3',
-        speakingRate: 1.07
+        speakingRate: 1.04
       },
     });
     await this._fs.writeFile(outputFilepath, response.audioContent, 'binary');
