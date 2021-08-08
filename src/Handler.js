@@ -1,19 +1,24 @@
 const TextToWAV = require('./TextToWAV');
+const {getAudioDurationInSeconds} = require('get-audio-duration');
 
 const RESULT_VAR = 'TEXT_TO_SPEECH_RESULT';
+const FILENAME_VAR = 'TEXT_TO_SPEECH_FILENAME';
+const DURATION_VAR = 'TEXT_TO_SPEECH_DURATION';
 
 class Handler {
-  constructor(context, textToWAV, voiceName) {
+  constructor(context, textToWAV, voiceName, _getAudioDurationInSeconds) {
     this._context = context;
     this._textToWAV = textToWAV;
     this._voiceName = voiceName;
+    this._getAudioDurationInSeconds = _getAudioDurationInSeconds;
   }
 
   static create(context, recordsDir, voiceName) {
     return new Handler(
       context,
       TextToWAV.create(recordsDir, true),
-      voiceName
+      voiceName,
+      getAudioDurationInSeconds
     );
   }
 
@@ -54,10 +59,14 @@ class Handler {
       console.log(`Set variable ${RESULT_VAR}=FAILED`);
       await this._context.setVariable(RESULT_VAR, 'FAILED');
 
-      const {filepath} = await this._textToWAV.convert(text, this._voiceName);
+      const {filepath, file} = await this._textToWAV.convert(text, this._voiceName);
+      const duration = await this._getAudioDurationInSeconds(file);
 
-      console.log('Stream file');
-      await this._context.streamFile(filepath, '#');
+      console.log(`Set variable ${DURATION_VAR}=${duration}`);
+      await this._context.setVariable(DURATION_VAR, duration);
+
+      console.log(`Set variable ${FILENAME_VAR}=${filepath}`);
+      await this._context.setVariable(FILENAME_VAR, filepath);
 
       console.log(`Set variable ${RESULT_VAR}=SUCCESS`);
       await this._context.setVariable(RESULT_VAR, 'SUCCESS');
