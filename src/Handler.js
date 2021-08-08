@@ -26,7 +26,7 @@ class Handler {
               return;
             }
 
-            resolve(Number(info.duration));
+            resolve(Math.round(info.duration * 1000));
           });
         });
       }
