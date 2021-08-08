@@ -1,5 +1,5 @@
 const TextToWAV = require('./TextToWAV');
-const {getAudioDurationInSeconds} = require('get-audio-duration');
+const wavFileInfo = require('wav-file-info');
 
 const RESULT_VAR = 'TEXT_TO_SPEECH_RESULT';
 const FILENAME_VAR = 'TEXT_TO_SPEECH_FILENAME';
@@ -18,7 +18,18 @@ class Handler {
       context,
       TextToWAV.create(recordsDir, true),
       voiceName,
-      getAudioDurationInSeconds
+      (filepath) => {
+        return new Promise((resolve, reject) => {
+          wavFileInfo.infoByFilename(filepath, (error, info) => {
+            if (error) {
+              reject(error);
+              return;
+            }
+
+            resolve(Number(info.duration));
+          });
+        });
+      }
     );
   }
 
