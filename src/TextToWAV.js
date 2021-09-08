@@ -27,7 +27,9 @@ class TextToWAV {
   }
 
   async convert(text, voiceName, speakingRate) {
-    const hash = crypto.createHash('md5').update(text).digest('hex');
+    const hash = crypto.createHash('md5')
+      .update([text, voiceName, speakingRate].join(';'))
+      .digest('hex');
     const filepath = path.join(this._recordsDir, hash);
     const wavExists = await this._isFileExists(filepath + '.wav');
 
