@@ -17,7 +17,7 @@ class TextToMP3 {
     );
   }
 
-  async convert(text, outputFilepath, voiceName) {
+  async convert(text, outputFilepath, voiceName, speakingRate) {
     const [response] = await this._textToSpeechClient.synthesizeSpeech({
       input: {text},
       voice: {
@@ -26,7 +26,7 @@ class TextToMP3 {
       },
       audioConfig: {
         audioEncoding: 'MP3',
-        speakingRate: 1.04
+        speakingRate
       },
     });
     await this._fs.writeFile(outputFilepath, response.audioContent, 'binary');

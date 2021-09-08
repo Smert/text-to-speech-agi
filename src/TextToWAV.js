@@ -26,7 +26,7 @@ class TextToWAV {
     );
   }
 
-  async convert(text, voiceName) {
+  async convert(text, voiceName, speakingRate) {
     const hash = crypto.createHash('md5').update(text).digest('hex');
     const filepath = path.join(this._recordsDir, hash);
     const wavExists = await this._isFileExists(filepath + '.wav');
@@ -34,7 +34,7 @@ class TextToWAV {
     if (!wavExists && !await this._isFileExists(filepath + '.mp3')) {
       this._log('Create MP3 using Google Text-To-Speech API');
       await retry(async () => {
-        return await this._textToMP3.convert(text, filepath + '.mp3', voiceName);
+        return await this._textToMP3.convert(text, filepath + '.mp3', voiceName, speakingRate);
       }, TEXT_TO_SPEECH_RETRY);
     }
 
