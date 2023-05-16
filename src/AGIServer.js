@@ -7,13 +7,14 @@ class AGIServer {
     this._handler = handler;
   }
 
-  static create(agiPort, recordsDir, voiceName, speakingRate) {
+  static create(agiPort, recordsDir, voiceName, speakingRate, pitch) {
     return new AGIServer(agiPort, (context) => {
       Handler.create(
         context,
         recordsDir,
         voiceName,
-        speakingRate
+        speakingRate,
+        pitch
       ).handle();
     });
   }

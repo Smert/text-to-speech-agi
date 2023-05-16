@@ -6,20 +6,22 @@ const FILENAME_VAR = 'TEXT_TO_SPEECH_FILENAME';
 const DURATION_VAR = 'TEXT_TO_SPEECH_DURATION';
 
 class Handler {
-  constructor(context, textToWAV, voiceName, speakingRate, _getAudioDurationInSeconds) {
+  constructor(context, textToWAV, voiceName, speakingRate, pitch, _getAudioDurationInSeconds) {
     this._context = context;
     this._textToWAV = textToWAV;
     this._voiceName = voiceName;
     this._speakingRate = speakingRate;
+    this._pitch = pitch;
     this._getAudioDurationInSeconds = _getAudioDurationInSeconds;
   }
 
-  static create(context, recordsDir, voiceName, speakingRate) {
+  static create(context, recordsDir, voiceName, speakingRate, pitch) {
     return new Handler(
       context,
       TextToWAV.create(recordsDir, true),
       voiceName,
       speakingRate,
+      pitch,
       (filepath) => {
         return new Promise((resolve, reject) => {
           wavFileInfo.infoByFilename(filepath, (error, info) => {
@@ -72,7 +74,12 @@ class Handler {
       console.log(`Set variable ${RESULT_VAR}=FAILED`);
       await this._context.setVariable(RESULT_VAR, 'FAILED');
 
-      const {filepath, file} = await this._textToWAV.convert(text, this._voiceName, this._speakingRate);
+      const {filepath, file} = await this._textToWAV.convert(
+        text,
+        this._voiceName,
+        this._speakingRate,
+        this._pitch
+      );
       const duration = await this._getAudioDurationInSeconds(file);
 
       console.log(`Set variable ${DURATION_VAR}=${duration}`);
